@@ -31,6 +31,7 @@ server.use(express.json());
 server.get('/', (req, res) => {
   res.status(201).json('API ONLINE');
 });
+
 server.get('/api/dishes', async (req, res) => {
   // get the dishes from the database
   try {
@@ -40,6 +41,31 @@ server.get('/api/dishes', async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+server.get('/api/dishes/:id', async (req, res) => {
+  // get the recipes from the database
+  try {
+    const recipe = await db('recipes')
+      .where({ id: req.params.id })
+      .first();
+    res.status(200).json(recipe);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+server.get('/api/dishes/:id/ingredients', async (req, res) => {
+  // get the recipes from the database
+  try {
+    const recipe = await db('recipes')
+      .where({ id: req.params.id })
+      .first();
+    res.status(200).json(recipe);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 const port = process.env.PORT || 5000;
 server.listen(port, () =>
   console.log(`\n** API running on http://localhost:${port} **\n`)
