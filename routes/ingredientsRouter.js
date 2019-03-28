@@ -1,7 +1,5 @@
 const express = require('express');
-const helmet = require('helmet');
 const knex = require('knex');
-const dishesRouter = require('./routes/dishesRouter');
 const knexConfig = {
   client: 'sqlite3',
   connection: {
@@ -22,20 +20,4 @@ const knexConfig = {
 };
 
 const db = knex(knexConfig);
-
-const server = express();
-
-server.use(helmet());
-server.use(express.json());
-
-server.get('/', (req, res) => {
-  res.status(201).json('API ONLINE');
-});
-
-const port = process.env.PORT || 5000;
-
-server.use('/api/dishes', dishesRouter);
-
-server.listen(port, () =>
-  console.log(`\n** API running on http://localhost:${port} **\n`)
-);
+const router = express.Router();

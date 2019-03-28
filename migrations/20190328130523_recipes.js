@@ -6,16 +6,8 @@ exports.up = function(knex, Promise) {
       .notNullable()
       .unique();
 
-    tbl
-      .integer('dishId')
-      .unsigned()
-      .references('id')
-      .inTable('dishes');
-
-    tbl
-      .string('instructions')
-      .unsigned()
-      .notNullable();
+    tbl.integer('dishId').notNullable();
+    tbl.string('instructions').notNullable();
   });
 };
 

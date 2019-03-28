@@ -6,18 +6,18 @@ exports.seed = function(knex, Promise) {
       // Inserts seed entries
       return knex('ingredients').insert([
         {
-          name: 'ingredient 1',
-          recipeId: 15,
+          name: 'tamarind',
+          recipeId: 1,
           unit: 'g'
         },
         {
-          name: 'ingredient 2',
-          recipeId: 14,
+          name: 'saffron',
+          recipeId: 3,
           unit: 'g'
         },
         {
-          name: 'ingredient 3',
-          recipeId: 13,
+          name: 'curry',
+          recipeId: 2,
           unit: 'g'
         }
       ]);
