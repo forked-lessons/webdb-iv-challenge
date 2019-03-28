@@ -6,7 +6,7 @@ const knexConfig = {
   connection: {
     filename: './data/recipe_book.db3'
   },
-  useNullAsDefault: true, // needed for sqlite
+  useNullAsDefault: true,
   migrations: {
     directory: './data/migrations'
   },
@@ -23,6 +23,8 @@ const knexConfig = {
 const db = require('../data/db');
 const router = express.Router();
 
+// GET ALL DISHES
+
 router.get('/', async (req, res) => {
   try {
     const dishes = await db.getDishes('dishes');
@@ -32,8 +34,20 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET ALL RECIPES
+
+router.get('/recipes', async (req, res) => {
+  try {
+    const recipes = await db.getRecipes('recipes');
+    res.status(200).json(recipes);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// GET DISH BY ID
+
 router.get('/:id', async (req, res) => {
-  // get the recipes from the database
   try {
     const id = req.params.id;
     const dish = await db.getDish(id);
@@ -42,6 +56,34 @@ router.get('/:id', async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+// GET RECIPE BY DISH ID
+
+router.get('/:id/recipes', async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const recipe = await db.getRecipe(id);
+    res.status(200).json(recipe);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// GET INGREDIENTS FOR A RECIPE
+router.get('/:id/recipes/:recipeId', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const recipe = await db.getRecipe(id);
+    const recipeId = req.params.recipeId;
+    const ingredients = await db.getIngredients(recipeId);
+    res.status(200).json(ingredients);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+//ADD A DISH
+
 router.post('/', async (req, res) => {
   try {
     const newDish = req.body;
@@ -51,4 +93,18 @@ router.post('/', async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+// ADD A RECIPE
+
+router.post('/:id/recipes', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const newRecipe = req.body;
+    db.addRecipe(newRecipe);
+    res.status(201).json(newRecipe);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 module.exports = router;
